@@ -1,23 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>zy6lc&#39;s Blog</title>
+      <title>zy6lc&#39;s Blog on zy6lc&#39;s Blog </title>
     <link>https://zy6lc.github.io/</link>
-    <description>Recent content on zy6lc&#39;s Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 01 Feb 2020 18:14:09 +0800</lastBuildDate>
-    
-	<atom:link href="https://zy6lc.github.io/index.xml" rel="self" type="application/rss+xml" />
-    
+    <author>Alexander Ivanov</author>
+    <updated>2020-02-01 21:27:05 &#43;0800 CST</updated>
     
     <item>
-      <title>My Post</title>
-      <link>https://zy6lc.github.io/2020/02/my-post/</link>
-      <pubDate>Sat, 01 Feb 2020 18:14:09 +0800</pubDate>
-      
-      <guid>https://zy6lc.github.io/2020/02/my-post/</guid>
-      <description>这就是一个测试 </description>
+      <title>Posts</title>
+      <link>https://zy6lc.github.io/posts/</link>
+      <pubDate>Sat, 01 Feb 2020 21:27:05 CST</pubDate>
+      <author>Alexander Ivanov</author>
+      <guid>https://zy6lc.github.io/posts/</guid>
+      <description></description>
     </item>
     
   </channel>
