@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <meta name="generator" content="Hugo 0.63.2" />
-  <link rel="canonical" href="https://zy6lc.github.io/tags/">
+  <link rel="canonical" href="https://zy6lc.github.io/unpack%E7%BB%88%E7%AB%AF%E4%B8%87%E8%83%BD%E8%A7%A3%E5%8E%8B%E5%B7%A5%E5%85%B7/">
 
   
 
@@ -32,7 +32,7 @@
 
   
   
-  <title>Tags | zy6lc</title>
+  <title>unpack终端万能解压工具 mac/ubuntu 命令行 command line | zy6lc</title>
 </head>
 
   <body>
@@ -166,7 +166,7 @@
       
       
       
-      <a href="/post/" >
+      <a href="/post/" aria-current="page">
         <svg class="bookmark-icon" aria-hidden="true" focusable="false" viewBox="0 0 40 50">
           <use xlink:href="#bookmark"></use>
         </svg>
@@ -179,7 +179,7 @@
       
       
       
-      <a href="/tags/" aria-current="page">
+      <a href="/tags/" >
         <svg class="bookmark-icon" aria-hidden="true" focusable="false" viewBox="0 0 40 50">
           <use xlink:href="#bookmark"></use>
         </svg>
@@ -208,22 +208,205 @@
         <div>
           
   <main id="main">
-    <h1>Tags</h1>
-    <ul class="patterns-list">
+    <h1>
+      <svg class="bookmark-icon" aria-hidden="true" viewBox="0 0 40 50" focusable="false">
+        <use xlink:href="#bookmark"></use>
+      </svg>
+      unpack终端万能解压工具 mac/ubuntu 命令行 command line
+    </h1>
+
+    <div class="date">
       
-        <li>
-          <h2>
-            <a href="/tags/command-tool/">
+      
+      <strong aria-hidden="true">Publish date: </strong>Feb 1, 2020
+      
+        
+      
+    </div>
+
+    
+      <div class="tags">
+        <strong aria-hidden="true">Tags: </strong>
+        <ul aria-label="tags">
+          
+            <li>
               <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
                 <use xlink:href="#tag"></use>
               </svg>
-              (1) command tool
-            </a>
-          </h2>
+              
+              <a href="https://zy6lc.github.io/tags/command-tool/">command tool</a>
+            </li>
+          
+        </ul>
+      </div>
+    
+    
+    
+      
+
+  <nav class="toc" aria-labelledby="toc-heading">
+    <h2 id="toc-heading">Table of contents</h2>
+    <ol>
+      
+        <li>
+          
+          
+          
+          
+          <a href="#%e9%97%ae%e9%a2%98%e6%8f%8f%e8%bf%b0">
+            问题描述
+          </a>
         </li>
       
-    </ul>
+        <li>
+          
+          
+          
+          
+          <a href="#%e6%94%b9%e8%bf%9b">
+            改进
+          </a>
+        </li>
+      
+        <li>
+          
+          
+          
+          
+          <a href="#%e5%90%8e%e8%ae%b0">
+            后记
+          </a>
+        </li>
+      
+        <li>
+          
+          
+          
+          
+          <a href="#references">
+            References
+          </a>
+        </li>
+      
+    </ol>
+  </nav>
+
+
+    
+
+    <p><em><strong>keywords</strong></em>:  <u><strong>unpack</strong></u>  <u><strong>终端</strong></u>  <u><strong>解压</strong></u>  <u><strong>命令行</strong></u>  <u><strong>mac</strong></u>  <u><strong>ubuntu</strong></u></p>
+<hr>
+<h2 id="问题描述">问题描述</h2>
+<p>我们经常会遇到的压缩文件有.zip、.7z、.tar.gz等等，但是在终端中要用不同的工具去解压，希望有一个统一的命令去解压它们，于是有了<a href="https://www.datascienceatthecommandline.com/chapter-3-obtaining-data.html">unpack</a>。</p>
+<pre><code class="language-shell">#!/usr/bin/env bash
+
+if [[ -z &quot;$@&quot; ]]; then
+    echo &quot; ${0##*/} &lt;archive&gt; - extract common file formats)&quot;
+    exit
+fi
+
+req_progs=(7z unrar unzip)
+for p in ${req_progs[@]}; do
+    hash &quot;$p&quot; 2&gt;&amp;- || \
+    { echo &gt;&amp;2 &quot; Required program \&quot;$p\&quot; not installed.&quot;; exit 1; }
+done
+
+if [ ! -f &quot;$@&quot; ]; then
+    echo &quot;File &quot;$@&quot; doesn't exist&quot;
+    exit
+fi
+
+case &quot;$@&quot; in
+    *.7z ) 7z x &quot;$@&quot; ;;
+    *.tar.bz2 ) tar xvjf &quot;$@&quot; ;;
+    *.bz2 ) bunzip2 &quot;$@&quot; ;;
+    *.deb ) ar vx &quot;$@&quot; ;;
+    *.tar.gz ) tar xvf &quot;$@&quot; ;;
+    *.gz ) gunzip &quot;$@&quot; ;;
+    *.tar ) tar xvf &quot;$@&quot; ;;
+    *.tbz2 ) tar xvjf &quot;$@&quot; ;;
+    *.tar.xz ) tar xvf &quot;$@&quot; ;;
+    *.tgz ) tar xvzf &quot;$@&quot; ;;
+    *.rar ) unrar x &quot;$@&quot; ;;
+    *.zip ) unzip &quot;$@&quot; ;;
+    *.Z ) uncompress &quot;$@&quot; ;;
+    * ) echo &quot; Unsupported file format&quot; ;;
+esac
+</code></pre>
+<p>有了上面的脚本，就可以用</p>
+<pre><code class="language-shell">sh unpack.sh yourfile.zip
+</code></pre>
+<h2 id="改进">改进</h2>
+<p>将unpack.sh脚本写到系统命令中，这样就直接用如下命令解压文件了</p>
+<pre><code class="language-shell">unpack yourfile.zip
+</code></pre>
+<h3 id="step1">step1</h3>
+<p>移动unpack.sh到目录/usr/local/sbin/</p>
+<h3 id="step2">step2</h3>
+<p>改变unpack.sh为可执行文件</p>
+<pre><code class="language-shell">sudo chmod 755 unpack.sh
+</code></pre>
+<h3 id="step3">step3</h3>
+<p>生成系统软连接</p>
+<pre><code class="language-shell">sudo ln -s /usr/local/sbin/unpack.sh /usr/bin/unpack
+</code></pre>
+<h2 id="后记">后记</h2>
+<h3 id="operation-not-permitted">Operation not permitted</h3>
+<p>在mac上，可能遇到Operation not permitted问题，具体解决方法是：重启按住 Command+R，进入恢复模式，打开Terminal：</p>
+<pre><code class="language-shell">csrutil disable
+</code></pre>
+<p>然后在尝试step3</p>
+<h3 id="required-program-xxx-not-installed">Required program &ldquo;xxx&rdquo; not installed</h3>
+<p>可以自行google各自系统下安装缺少的解压工具。</p>
+<h3 id="不能解压某种类型的压缩文件">不能解压某种类型的压缩文件</h3>
+<p>如果不支持解压你的压缩文件，则可以在unpack.sh脚本中</p>
+<pre><code class="language-shell">case &quot;$@&quot; in
+</code></pre>
+<p>这一行的下面按照格式添加缺少的解压工具。</p>
+<hr>
+<p>这种方式在mac和ubuntu上都可行。其实在mac上，可以直接用</p>
+<pre><code class="language-shell">open filename.zip
+</code></pre>
+<p>这个方式也可以解压任意格式的压缩文件，但是解压完成后会自动打开解压文件所在目录，跳出了终端，影响了终端操作的连贯性。</p>
+<h2 id="references">References</h2>
+<p><em>Janssens. October 15, 2019. <a href="https://www.datascienceatthecommandline.com/index.html">Data Science at the Command Line Jeroen</a></em></p>
+
   </main>
+  <div id="disqus-container">
+  
+    <button id="disqus-button" onclick="showComments()">Show comments</button>
+    <div id="disqus-comments">
+      
+      
+      
+        <div id="disqus_thread">
+        </div>
+        <script type="application/javascript">
+          function showComments() {
+            // Config
+var disqus_config = function () {
+};
+// Build and append comments 
+var d = document;
+var s = d.createElement('script');
+s.async = true;
+s.src = '//' + "zy6lc" + '.disqus.com/embed.js';
+s.setAttribute('data-timestamp', + new Date());
+(d.head || d.body).appendChild(s);
+            // Remove button
+var disqusButton = document.getElementById('disqus-button');
+disqusButton.parentNode.removeChild(disqusButton); 
+// Un-hide comments
+var disqusComments = document.getElementById('disqus-comments');
+disqusComments.style.display = 'block'; 
+          }
+        </script>
+      
+      <noscript>Enable JavaScript to view Disqus comments.</noscript>
+    </div>
+  
+</div>
+
 
           <footer role="contentinfo">
   <div>

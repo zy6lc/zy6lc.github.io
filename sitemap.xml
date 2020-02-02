@@ -3,26 +3,33 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://zy6lc.github.io/posts/</loc>
-    <lastmod>2020-02-01T21:27:05+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://zy6lc.github.io/posts/unpack%E7%BB%88%E7%AB%AF%E4%B8%87%E8%83%BD%E8%A7%A3%E5%8E%8B%E5%B7%A5%E5%85%B7/</loc>
-    <lastmod>2020-02-01T21:27:05+08:00</lastmod>
+    <loc>https://zy6lc.github.io/about/</loc>
+    <lastmod>2019-02-12T16:25:13-06:00</lastmod>
   </url>
   
   <url>
     <loc>https://zy6lc.github.io/</loc>
+    <lastmod>2019-12-10T21:06:02-06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zy6lc.github.io/tags/command-tool/</loc>
     <lastmod>2020-02-01T21:27:05+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://zy6lc.github.io/categories/</loc>
+    <loc>https://zy6lc.github.io/tags/</loc>
+    <lastmod>2020-02-01T21:27:05+08:00</lastmod>
   </url>
   
   <url>
-    <loc>https://zy6lc.github.io/tags/</loc>
+    <loc>https://zy6lc.github.io/unpack%E7%BB%88%E7%AB%AF%E4%B8%87%E8%83%BD%E8%A7%A3%E5%8E%8B%E5%B7%A5%E5%85%B7/</loc>
+    <lastmod>2020-02-01T21:27:05+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://zy6lc.github.io/post/</loc>
+    <lastmod>2019-02-12T16:25:13-06:00</lastmod>
   </url>
   
 </urlset>
