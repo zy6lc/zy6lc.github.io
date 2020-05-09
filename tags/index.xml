@@ -6,10 +6,19 @@
     <description>Recent content in Tags on zy6lc</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 01 Feb 2020 21:27:05 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 05 May 2020 18:30:36 +0800</lastBuildDate>
     
 	<atom:link href="https://zy6lc.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>algorithm</title>
+      <link>https://zy6lc.github.io/tags/algorithm/</link>
+      <pubDate>Tue, 05 May 2020 18:30:36 +0800</pubDate>
+      
+      <guid>https://zy6lc.github.io/tags/algorithm/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>command tool</title>
