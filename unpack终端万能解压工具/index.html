@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <meta name="generator" content="Hugo 0.63.2" />
+  <meta name="generator" content="Hugo 0.58.3" />
   <link rel="canonical" href="https://zy6lc.github.io/unpack%E7%BB%88%E7%AB%AF%E4%B8%87%E8%83%BD%E8%A7%A3%E5%8E%8B%E5%B7%A5%E5%85%B7/">
 
   
@@ -294,10 +294,16 @@
 
     
 
-    <p><em><strong>keywords</strong></em>:  <u><strong>unpack</strong></u>  <u><strong>终端</strong></u>  <u><strong>解压</strong></u>  <u><strong>命令行</strong></u>  <u><strong>mac</strong></u>  <u><strong>ubuntu</strong></u></p>
-<hr>
+    
+
+<p><strong><em>keywords</em></strong>:  <u><strong>unpack</strong></u>  <u><strong>终端</strong></u>  <u><strong>解压</strong></u>  <u><strong>命令行</strong></u>  <u><strong>mac</strong></u>  <u><strong>ubuntu</strong></u></p>
+
+<hr />
+
 <h2 id="问题描述">问题描述</h2>
+
 <p>我们经常会遇到的压缩文件有.zip、.7z、.tar.gz等等，但是在终端中要用不同的工具去解压，希望有一个统一的命令去解压它们，于是有了<a href="https://www.datascienceatthecommandline.com/chapter-3-obtaining-data.html">unpack</a>。</p>
+
 <pre><code class="language-shell">#!/usr/bin/env bash
 
 if [[ -z &quot;$@&quot; ]]; then
@@ -333,42 +339,72 @@ case &quot;$@&quot; in
     * ) echo &quot; Unsupported file format&quot; ;;
 esac
 </code></pre>
+
 <p>有了上面的脚本，就可以用</p>
+
 <pre><code class="language-shell">sh unpack.sh yourfile.zip
 </code></pre>
+
 <h2 id="改进">改进</h2>
+
 <p>将unpack.sh脚本写到系统命令中，这样就直接用如下命令解压文件了</p>
+
 <pre><code class="language-shell">unpack yourfile.zip
 </code></pre>
+
 <h3 id="step1">step1</h3>
+
 <p>移动unpack.sh到目录/usr/local/sbin/</p>
+
 <h3 id="step2">step2</h3>
+
 <p>改变unpack.sh为可执行文件</p>
+
 <pre><code class="language-shell">sudo chmod 755 unpack.sh
 </code></pre>
+
 <h3 id="step3">step3</h3>
+
 <p>生成系统软连接</p>
+
 <pre><code class="language-shell">sudo ln -s /usr/local/sbin/unpack.sh /usr/bin/unpack
 </code></pre>
+
 <h2 id="后记">后记</h2>
+
 <h3 id="operation-not-permitted">Operation not permitted</h3>
+
 <p>在mac上，可能遇到Operation not permitted问题，具体解决方法是：重启按住 Command+R，进入恢复模式，打开Terminal：</p>
+
 <pre><code class="language-shell">csrutil disable
 </code></pre>
+
 <p>然后在尝试step3</p>
+
 <h3 id="required-program-xxx-not-installed">Required program &ldquo;xxx&rdquo; not installed</h3>
+
 <p>可以自行google各自系统下安装缺少的解压工具。</p>
+
 <h3 id="不能解压某种类型的压缩文件">不能解压某种类型的压缩文件</h3>
+
 <p>如果不支持解压你的压缩文件，则可以在unpack.sh脚本中</p>
+
 <pre><code class="language-shell">case &quot;$@&quot; in
 </code></pre>
+
 <p>这一行的下面按照格式添加缺少的解压工具。</p>
-<hr>
+
+<hr />
+
 <p>这种方式在mac和ubuntu上都可行。其实在mac上，可以直接用</p>
+
 <pre><code class="language-shell">open filename.zip
 </code></pre>
+
 <p>这个方式也可以解压任意格式的压缩文件，但是解压完成后会自动打开解压文件所在目录，跳出了终端，影响了终端操作的连贯性。</p>
+
 <h2 id="references">References</h2>
+
 <p><em>Janssens. October 15, 2019. <a href="https://www.datascienceatthecommandline.com/index.html">Data Science at the Command Line Jeroen</a></em></p>
 
   </main>

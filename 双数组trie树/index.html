@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <meta name="generator" content="Hugo 0.63.2" />
+  <meta name="generator" content="Hugo 0.58.3" />
   <link rel="canonical" href="https://zy6lc.github.io/%E5%8F%8C%E6%95%B0%E7%BB%84trie%E6%A0%91/">
 
   
@@ -284,26 +284,43 @@
 
     
 
-    <h2 id="概念">概念</h2>
-<p><a href="%5Bhttps://baike.baidu.com/item/%E5%AD%97%E5%85%B8%E6%A0%91/9825209?fromtitle=Trie%E6%A0%91&amp;fromid=517527%5D(https://baike.baidu.com/item/%E5%AD%97%E5%85%B8%E6%A0%91/9825209?fromtitle=Trie%E6%A0%91&amp;fromid=517527)">百度百科</a></p>
+    
+
+<p><strong><em>keywords</em></strong>:  <u><strong>trie树</strong></u>  <u><strong>双数组</strong></u>  <u><strong>双数组trie</strong></u>  <u><strong>double array trie</strong></u></p>
+
+<hr />
+
+<h2 id="概念">概念</h2>
+
+<p><a href="[https://baike.baidu.com/item/%E5%AD%97%E5%85%B8%E6%A0%91/9825209?fromtitle=Trie%E6%A0%91&amp;fromid=517527](https://baike.baidu.com/item/字典树/9825209?fromtitle=Trie树&amp;fromid=517527)">百度百科</a></p>
+
 <p>里面有一些语言的实现。</p>
+
 <h2 id="双数组trie树">双数组trie树</h2>
-<p>双数组trie树是trie的一中实现，用了两个数组存储整个trie树，好处是什么呢？通过双数组trie树的构造过程就可以知道（构造方式有多种，但是核心思路是一样的）。</p>
+
+<p>双数组trie树是trie的一种实现，用了两个数组存储整个trie树，好处是什么呢？通过双数组trie树的构造过程就可以知道。</p>
+
 <h3 id="第一次构造">第一次构造</h3>
-<p>假如现在我有一个词典，词典中只有一个词语：</p>
+
+<p>假设现在有一个词典，词典中只有一个词语：</p>
+
 <pre><code class="language-text">三天三夜
 </code></pre>
+
 <p>现在我要用双数组的方式构造trie树：</p>
-<p>a.首先给这个词语的每个字符一个编码，然后初始化两个一定长度，并且元素全为0的数组A、B，再然后令B[0]=1，index=0，迭代index的公式为index=code+1，为了后续的匹配，令B[index]=child.index，A[index]=0说明位置空，A[index]=code+1说明位置被占用，并且可以通过code知道具体的字符：</p>
+
+<p>a.首先给这个词语的每个字符一个编码：</p>
+
 <table>
 <thead>
 <tr>
-<th>char</th>
+<th>CHAR</th>
 <th>三</th>
 <th>天</th>
 <th>夜</th>
 </tr>
 </thead>
+
 <tbody>
 <tr>
 <td>CODE</td>
@@ -313,6 +330,9 @@
 </tr>
 </tbody>
 </table>
+
+<p>b.初始化两个一定长度，并且元素全为0的数组A、B，再初始化B[0]=1，index=0，迭代index的公式为index=code+1；</p>
+
 <table>
 <thead>
 <tr>
@@ -325,6 +345,7 @@
 <th>5</th>
 </tr>
 </thead>
+
 <tbody>
 <tr>
 <td>A</td>
@@ -335,6 +356,7 @@
 <td>0</td>
 <td>0</td>
 </tr>
+
 <tr>
 <td>B</td>
 <td>1</td>
@@ -346,8 +368,11 @@
 </tr>
 </tbody>
 </table>
-<p>b.现在开始遍历词典，构造A、B数组：</p>
-<p>​		1.字符‘三’，code=0，index=code+1=1，因为A[index]=A[1]=0，该位置未占用，这个时候就可以令A[1]=value=code+1，则A[1]=1；</p>
+
+<p>c.现在开始遍历词典，构造A、B数组：</p>
+
+<p>​       1.字符‘三’，code=0，index=code+1=1，因为A[index]=A[1]=0，该位置未占用，这个时候就可以令A[1]=value，证明这个位置已经被占用了，怎么定义这个value，假设就取value=1吧，则value=1，即A[1]=1；</p>
+
 <table>
 <thead>
 <tr>
@@ -360,6 +385,7 @@
 <th>5</th>
 </tr>
 </thead>
+
 <tbody>
 <tr>
 <td>A</td>
@@ -370,6 +396,7 @@
 <td>0</td>
 <td>0</td>
 </tr>
+
 <tr>
 <td>B</td>
 <td>1</td>
@@ -381,7 +408,9 @@
 </tr>
 </tbody>
 </table>
-<p>​		2.字符‘天’，code=1，index=code+1=2，此时A[index]=A[2]=0，位置未被占用，令A[2]=code+1=2，但是字符‘天’怎么和父字符‘三’关联呢？这时候就用到了数组B，在a中我们定义了B[index]=child.index，所以在这里就应该令B[parent.index]=index，parent.index是‘三’的index，为1，则B[1]=2；</p>
+
+<p>​       2.字符‘天’，code=1，index=code+1=2，此时A[index]=A[2]=0，位置未被占用，令A[1]=1，但是字符‘天’怎么和父字符‘三’关联呢？这时候就用到了数组B，令B[parent.index]=index，parent.index是‘三’的index，为1，则B[1]=2；</p>
+
 <table>
 <thead>
 <tr>
@@ -394,16 +423,18 @@
 <th>5</th>
 </tr>
 </thead>
+
 <tbody>
 <tr>
 <td>A</td>
 <td>0</td>
 <td>1</td>
-<td>2</td>
+<td>1</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
 </tr>
+
 <tr>
 <td>B</td>
 <td>1</td>
@@ -415,7 +446,9 @@
 </tr>
 </tbody>
 </table>
-<p>​		3.字符‘三’，code=0，index=code+1=1，此时A[1]=1，位置被占用，则index++，index=2，此时A[2]=1，还是被占用，index++，index=3，此时A[3]=0，则令A[3]=code+1=1，和父字符关联，则B[parent.index]=index，即B[2]=3；</p>
+
+<p>​       3.字符‘三’，code=0，index=code+1=1，此时A[1]=1，位置被占用，则index++，index=2，此时A[2]=1，还是被占用，index++，index=3，此时A[3]=0，则令A[3]=value=1，和父字符关联，则B[parent.index]=index，即B[2]=3；</p>
+
 <table>
 <thead>
 <tr>
@@ -428,62 +461,32 @@
 <th>5</th>
 </tr>
 </thead>
+
 <tbody>
 <tr>
 <td>A</td>
 <td>0</td>
 <td>1</td>
-<td>2</td>
+<td>1</td>
 <td>1</td>
 <td>0</td>
 <td>0</td>
 </tr>
-<tr>
-<td>B</td>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>​		4.字符‘夜’，code=2，index=code+1=3，此时A[index]=A[3]=1，被占用，则index自增直到A[index]=0，此时index=4，令A[4]=code+1=4，和父字符关联，则B[parent.index]=index，即B[3]=4；</p>
-<table>
-<thead>
-<tr>
-<th>INDEX</th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A</td>
-<td>0</td>
-<td>1</td>
-<td>2</td>
-<td>1</td>
-<td>4</td>
-<td>0</td>
-</tr>
+
 <tr>
 <td>B</td>
 <td>1</td>
 <td>2</td>
 <td>3</td>
-<td>4</td>
+<td>0</td>
 <td>0</td>
 <td>0</td>
 </tr>
 </tbody>
 </table>
-<p>​		5.字符读取结束，需要给上一个字符‘夜’一个结束的标志，令B[4]=-1；</p>
+
+<p>​       4.字符‘夜’，code=2，index=code+1=3，此时A[index]=A[3]=1，被占用，则index自增直到A[index]=0，此时index=4，令A[4]=1，和父字符关联，则B[parent.index]=index，即B[3]=4；</p>
+
 <table>
 <thead>
 <tr>
@@ -496,16 +499,56 @@
 <th>5</th>
 </tr>
 </thead>
+
 <tbody>
 <tr>
 <td>A</td>
 <td>0</td>
 <td>1</td>
-<td>2</td>
 <td>1</td>
-<td>4</td>
+<td>1</td>
+<td>1</td>
 <td>0</td>
 </tr>
+
+<tr>
+<td>B</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+
+<p>​       5.字符读取结束，需要给上一个字符‘夜’一个结束的标志，令B[4]=-1；</p>
+
+<table>
+<thead>
+<tr>
+<th>INDEX</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>A</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+
 <tr>
 <td>B</td>
 <td>1</td>
@@ -517,16 +560,29 @@
 </tr>
 </tbody>
 </table>
+
+<p>构造完之后，我们来试试用这个双数组进行匹配。</p>
+
 <h3 id="第一次匹配">第一次匹配</h3>
+
 <p>现在得到的双数组就是上表的样子，怎么使用呢，假设现在正好需要匹配‘三天三夜’这个词语：</p>
-<p>​		1.字符‘三’，code=0，index=code+1=1，此时A[1]=1=code+1，找到字符，并且B[parent.index]=B[0]=1=index，正确；</p>
-<p>​		2.字符‘天’，code=1，index=code+1=2，此时A[2]=1=code+1，找到字符，并且B[parent.index]=B[1]=2=index，正确；</p>
-<p>​		3.字符‘三’，code=0，index=code+1=2，此时A[1]=1=code+1，找到字符，但是B[parent.index]=B[2]=3!=index，匹配陷入僵局。。。</p>
-<p>以上，在第3步没有成功，是因为我们希望此时的index=3，但是怎么样才能等于3呢？简单，在每加入一个字符的时候加一个变量吧，假如是b，则在上述第三步中b=1时有index=b+code+1=3。那之前的构造过程中index的迭代公式就应该改为index=b+code+1。</p>
+
+<p>​       1.字符‘三’，code=0，index=code+1=1，此时A[1]=1，找到字符，并且B[parent.index]=B[0]=1=index，正确；</p>
+
+<p>​       2.字符‘天’，code=1，index=code+1=2，此时A[2]=1，找到字符，并且B[parent.index]=B[1]=2=index，正确；</p>
+
+<p>​       3.字符‘三’，code=0，index=code+1=2，此时A[1]=1，找到字符，但是B[parent.index]=B[2]=3!=index，匹配陷入僵局。。。</p>
+
+<p>以上，在第3步没有成功，是因为我们希望此时的index=3，但是怎么样才能等于3呢？简单，在每加入一个字符的时候加一个变量吧，假如是b，则在上述第三步中b=1时有index=b+code+1=3。那之前的构造过程中index的迭代公式就应该改为index=b+code+1，那么在匹配的时候，b=B[parent.index]。</p>
+
 <h3 id="第二次构造">第二次构造</h3>
-<p>a.初始化和第一次构造相同，多了在每假如一个字符的时候初始化b=1；</p>
+
+<p>a.初始化和第一次构造相同；</p>
+
 <p>b.遍历词语：</p>
-<p>​		1.初始b=1，字符‘三’，code=0，index=b+code+1=2，A[2]=0，未被占用，则令A[2]=code+1=1；</p>
+
+<p>​       1.初始b=1，字符‘三’，code=0，index=b+code+1=2，A[2]=0，未被占用，则令A[2]=1；</p>
+
 <table>
 <thead>
 <tr>
@@ -539,6 +595,7 @@
 <th>5</th>
 </tr>
 </thead>
+
 <tbody>
 <tr>
 <td>A</td>
@@ -549,6 +606,7 @@
 <td>0</td>
 <td>0</td>
 </tr>
+
 <tr>
 <td>B</td>
 <td>1</td>
@@ -560,7 +618,9 @@
 </tr>
 </tbody>
 </table>
-<p>​		2.初始b=1，字符‘天’，code=1，index=b+code+1=3，A[3]=0，未被占用，则令A[3]=code+1=2，为了和父字符相关联，则B[parent.index]=1，即B[2]=1；</p>
+
+<p>​       2.初始b=1，字符‘天’，code=1，index=b+code+1=3，A[3]=0，未被占用，则令A[3]=1，为了和父字符相关联，则B[parent.index]=b=1，即B[2]=1；</p>
+
 <table>
 <thead>
 <tr>
@@ -573,16 +633,18 @@
 <th>5</th>
 </tr>
 </thead>
+
 <tbody>
 <tr>
 <td>A</td>
 <td>0</td>
 <td>0</td>
 <td>1</td>
-<td>2</td>
+<td>1</td>
 <td>0</td>
 <td>0</td>
 </tr>
+
 <tr>
 <td>B</td>
 <td>1</td>
@@ -594,7 +656,9 @@
 </tr>
 </tbody>
 </table>
-<p>​		3.初始b=1，字符‘三’，code=0，index=b+code+1=2，A[2]=1被占用，此时注意，这里不像第一次构造那样对index进行自增，而是对b进行自增，直到A[index]=0，当b自增两次时b=3，index=4，A[4]=0，未被占用，令A[4]=code+1=1，和父字符关联，则B[parent.index]=b=3，即B[3]=3；</p>
+
+<p>​       3.初始b=1，字符‘三’，code=0，index=b+code+1=2，A[2]=1被占用，此时注意，这里不像第一次构造那样对index进行自增，而是对b进行自增，直到A[index]=0，当b自增两次时b=3，index=4，A[4]=0，未被占用，令A[4]=1，和父字符关联，则B[parent.index]=b=3，即B[3]=3；</p>
+
 <table>
 <thead>
 <tr>
@@ -607,16 +671,18 @@
 <th>5</th>
 </tr>
 </thead>
+
 <tbody>
 <tr>
 <td>A</td>
 <td>0</td>
 <td>0</td>
 <td>1</td>
-<td>2</td>
+<td>1</td>
 <td>1</td>
 <td>0</td>
 </tr>
+
 <tr>
 <td>B</td>
 <td>1</td>
@@ -628,7 +694,9 @@
 </tr>
 </tbody>
 </table>
-<p>​		4.初始化b=1，字符‘夜’，code=2，index=b+code+1=4，A[4]=1被占用，b自增，此时b=2，index=5，A[5]=0，未被占用，令A[5]=code+1=3，和父字符关联，B[parent.index]=B[4]=2；</p>
+
+<p>​       4.初始化b=1，字符‘夜’，code=2，index=b+code+1=4，A[4]=1被占用，b自增，此时b=2，index=5，A[5]=0，未被占用，令A[5]=1，和父字符关联，B[parent.index]=b=2；</p>
+
 <table>
 <thead>
 <tr>
@@ -641,16 +709,18 @@
 <th>5</th>
 </tr>
 </thead>
+
 <tbody>
 <tr>
 <td>A</td>
 <td>0</td>
 <td>0</td>
 <td>1</td>
-<td>2</td>
 <td>1</td>
-<td>3</td>
+<td>1</td>
+<td>1</td>
 </tr>
+
 <tr>
 <td>B</td>
 <td>1</td>
@@ -662,7 +732,9 @@
 </tr>
 </tbody>
 </table>
-<p>​		5.字符读取结束，处理和第一次构建一样；</p>
+
+<p>​       5.字符读取结束，处理和第一次构建一样；</p>
+
 <table>
 <thead>
 <tr>
@@ -675,16 +747,18 @@
 <th>5</th>
 </tr>
 </thead>
+
 <tbody>
 <tr>
 <td>A</td>
 <td>0</td>
 <td>0</td>
 <td>1</td>
-<td>2</td>
 <td>1</td>
-<td>3</td>
+<td>1</td>
+<td>1</td>
 </tr>
+
 <tr>
 <td>B</td>
 <td>1</td>
@@ -696,226 +770,26 @@
 </tr>
 </tbody>
 </table>
+
 <h3 id="第二次匹配">第二次匹配</h3>
+
 <p>同样是对‘三天三夜’进行匹配。</p>
-<p>​		1.b=B[parent.index]==B[0]=1，字符‘三’，code=0，index=b+code+1=2，A[2]=1=code+1，找到字符，并且B[index]&gt;0，正确；</p>
-<p>​		2.b=B[parent.index]=B[2]=1，字符‘天’，code=1，index=b+code+1=3，A[3]=2=code+1，找到字符，并且B[index]&gt;0，正确；</p>
-<p>​		3.b=B[parent.index]=B[3]=3，字符‘三’，code=0，index=b+code+1=4，A[4]=1=code+1，找到字符，并且B[index]&gt;0，正确;</p>
-<p>​		4.b=B[parent.index]=B[4]=2，字符‘夜’，code=2，index=b+code+1=5，A[5]=3=code+1，找到字符，此时B[index]=-1&lt;0，说明‘夜’是一个叶子字符，返回遍历的字符集合[‘三’，‘天’，‘三’，‘夜’]，结束匹配；</p>
-<p>哈哈，是不是很简单呀？别急，这只是词典只有一个词语的情况，如果有多个词语怎么办呢？假设现在词典多了一个词语‘三天两头’：</p>
-<pre><code class="language-text">三天三夜
-三天两头
-</code></pre>
-<h3 id="第三次构建">第三次构建</h3>
-<p>现在的字符编码为：</p>
-<table>
-<thead>
-<tr>
-<th>char</th>
-<th>三</th>
-<th>天</th>
-<th>夜</th>
-<th>两</th>
-<th>头</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>CODE</td>
-<td>0</td>
-<td>1</td>
-<td>2</td>
-<td>3</td>
-<td>4</td>
-</tr>
-</tbody>
-</table>
-<p>添加完之后的trie树是长这个样子的（由于markdown树形图问题，所以给了‘三’下标，表示第一个和第二个）：</p>
-<p><img src="/images/pic1.jpg" alt="trie"></p>
-<p>假设已经添加完‘三天三夜’后，在添加‘三天两头’时，我们跳过公共前缀‘三’和‘天’（为了方便理解），直接从‘两’开始。</p>
-<table>
-<thead>
-<tr>
-<th>INDEX</th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>2</td>
-<td>1</td>
-<td>3</td>
-</tr>
-<tr>
-<td>B</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>3</td>
-<td>2</td>
-<td>-1</td>
-</tr>
-</tbody>
-</table>
-<p>a.构建过程：</p>
-<p>​		1.初始b=1，字符‘两’，code=3，index=b+code+1=5，A[5]=1，被占用，则b++，b=2，index=6，A[6]=0，未占用，令A[6]=code+1=4，和父字符关联，则B[parent.index]=b=2，注意，此时的parent.index是字符‘天’的index，所以B[parent.index]=B[3]=b=2。。。等等，之前不是已经得到了B[3]=3吗？构造陷入尴尬。。。</p>
-<p>思考一下之前的构造过程，在每添加一个字符的时候都初始化b=1，但是我们遇到了上述问题，我们希望字符‘天’对应的B[index]=b能够同时适用于其所有子字符‘三’和‘两’，所以现在初始化的时候就不能以一个字符为单位，而应该以一组兄弟字符为单位，比如上述问题中应该以[‘三’，‘两’]为单位进行构造，这样才能共用一个相同的b值。那好，开始改，现在连‘三天三夜’也要重新构造，假如已经构造好公公前缀了‘三’和‘天’，从分歧的地方[‘三’，‘两’]开始：</p>
-<table>
-<thead>
-<tr>
-<th>INDEX</th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>2</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td>B</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>​		1.初始化b=1，字符集[‘三’，‘两’]，index(三)=b+code(三)+1=X，index(两)=b+code(两)+1=Y，现在需要A[X]和A[Y]同时等于0，通过b的自增，发现当b=3时，index(三)=X=4，index(两)=Y=7可以满足条件，则B[parent.index]=B[3]=b=3，同时令A[4]=code(三)+1=1，A[7]=code(两)+1=4；</p>
-<table>
-<thead>
-<tr>
-<th>INDEX</th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>2</td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-<td>4</td>
-<td>0</td>
-</tr>
-<tr>
-<td>B</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>3</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>​		2.省略添加剩余字符的过程，添加后如下表：</p>
-<table>
-<thead>
-<tr>
-<th>INDEX</th>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-<td>2</td>
-<td>1</td>
-<td>3</td>
-<td>5</td>
-<td>4</td>
-<td>0</td>
-</tr>
-<tr>
-<td>B</td>
-<td>1</td>
-<td>0</td>
-<td>1</td>
-<td>3</td>
-<td>2</td>
-<td>-1</td>
-<td>-1</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr>
-<td>CHAR</td>
-<td></td>
-<td></td>
-<td>三1</td>
-<td>天</td>
-<td>三2</td>
-<td>夜</td>
-<td>头</td>
-<td>两</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h3 id="第三次匹配">第三次匹配</h3>
-<p>假如现在要匹配‘三天两头’，省略前面两个字符‘三’和‘天’的过程：</p>
-<p>​		1.b=B[parent.index]=B[3]=3，字符‘两’，code=3，index=b+code+1=7，A[7]=4=code+1，找到字符，并且B[index]&gt;0，正确；</p>
-<p>​		2.b=B[parent.index]=B[7]=1，字符‘头’，code=4，index=b+code+1=6，A[6]=5=code+1，找到字符，并且B[index]=-1&lt;0，匹配成功；</p>
-<p>让我们再来匹配一个词，假如就匹配‘三夜’：</p>
-<p>​		1.b=B[parent.index]=B[0]=1，字符‘三’，code=0，index=b+code+1=2，A[2]=1=code+1，找到字符，并且B[index]&gt;0，正确；</p>
-<p>​		2.b=B[parent.index]=B[2]=3，字符‘夜’，code=2，index=b+code+1=6，A[6]=5!=code+1，未找到字符，退出。</p>
+
+<p>​       1.b=B[parent.index]=1(root字符b=1），字符‘三’，code=0，index=b+code+1=2，A[2]=1，找到字符，并且B[index]&gt;0，正确；</p>
+
+<p>​       2.b=B[parent.index]=1，字符‘天’，code=1，index=b+code+1=3，A[3]=1，找到字符，并且B[index]&gt;0，正确；</p>
+
+<p>​       3.b=B[parent.index]=3，字符‘三’，code=0，index=b+code+1=4，A[4]=1，找到字符，并且B[index]&gt;0，正确;</p>
+
+<p>​       4.b=B[parent.index]=2，字符‘夜’，code=2，index=b+code+1=5，A[5]=1，找到字符，此时B[index]=-1&lt;0，说明‘夜’是一个叶子字符，返回遍历的字符集合[‘三’，‘天’，‘三’，‘夜’]，结束匹配；</p>
+
+<p>以上就是整个双数组trie树的构建过程和匹配过程。</p>
+
 <h2 id="总结">总结</h2>
-<p>通过上述的例子发现，在构造双数组trie树过程中，对于一族字符（有相同的一个父字符的集合）需要满足的条件是：</p>
-<pre><code class="language-text">index=b+code+1
-A[index]=0
-确定index之后需要改变的值:
-B[parent.index]=b
-A[index]=code+1
-</code></pre>
-<p>我之前看了很多关于双数组trie树的帖子，但是都没看明白，即使很多人都看了<a href="https://github.com/komiya-atsushi/darts-java">darts-java</a>。所以为了搞明白，结合代码和自己的思路，就有了上述文章。（顺便说一下，本文的构造条件和darts-java的稍有不同）希望这篇文章对你有帮助，如果文章有错误的地方或者你有不同见解，可以联系我，如果你要转载，请注明出处。</p>
+
+<p>以上例子是展示了当词典只有一个词语的情况，如果词语量庞大的时候还需要考虑更多的。还记得在构建过程中A[index]=value吗？这个value是随便取的1，是因为词典只有一个词语，那现在假如词典除了‘三天三夜’还多了‘三更半夜’呢？你可以自己按照上述方式看看如果构建此时的数组A、B（此时value就不能是1了）。</p>
+
+<p>双数组trie树无论是理论还是实现都比较复杂，我之前看了很多帖子，但是没有一个让我真正的看明白，即使很多人都看了<a href="https://github.com/komiya-atsushi/darts-java">darts-java</a>。所以为了搞明白，我直接用其他语言实现了一遍，就有了上述文章，希望对你有帮助，如果你要转载，请注明出处。</p>
 
   </main>
   <div id="disqus-container">

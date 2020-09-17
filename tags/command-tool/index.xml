@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>command tool on zy6lc</title>
@@ -18,7 +18,7 @@
       
       <guid>https://zy6lc.github.io/unpack%E7%BB%88%E7%AB%AF%E4%B8%87%E8%83%BD%E8%A7%A3%E5%8E%8B%E5%B7%A5%E5%85%B7/</guid>
       <description>keywords: unpack 终端 解压 命令行 mac ubuntu
- 问题描述 我们经常会遇到的压缩文件有.zip、.7z、.tar.gz等等，但是在终端中要用不同的工具去解压，希望有一个统一的命令去解压它们，于是有了unpack。
+问题描述 我们经常会遇到的压缩文件有.zip、.7z、.tar.gz等等，但是在终端中要用不同的工具去解压，希望有一个统一的命令去解压它们，于是有了unpack。
 #!/usr/bin/env bash if [[ -z &amp;quot;$@&amp;quot; ]]; then echo &amp;quot; ${0##*/} &amp;lt;archive&amp;gt; - extract common file formats)&amp;quot; exit fi req_progs=(7z unrar unzip) for p in ${req_progs[@]}; do hash &amp;quot;$p&amp;quot; 2&amp;gt;&amp;amp;- || \ { echo &amp;gt;&amp;amp;2 &amp;quot; Required program \&amp;quot;$p\&amp;quot; not installed.&amp;quot;; exit 1; } done if [ ! -f &amp;quot;$@&amp;quot; ]; then echo &amp;quot;File &amp;quot;$@&amp;quot; doesn&#39;t exist&amp;quot; exit fi case &amp;quot;$@&amp;quot; in *.</description>
     </item>
     
