@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <meta name="generator" content="Hugo 0.58.3" />
-  <link rel="canonical" href="https://zy6lc.github.io/tags/">
+  <link rel="canonical" href="https://zy6lc.github.io/fullconns/">
 
   
 
@@ -32,7 +32,7 @@
 
   
   
-  <title>Tags | zy6lc</title>
+  <title>用代码解释全连接网络 | zy6lc</title>
 </head>
 
   <body>
@@ -166,7 +166,7 @@
       
       
       
-      <a href="/post/" >
+      <a href="/post/" aria-current="page">
         <svg class="bookmark-icon" aria-hidden="true" focusable="false" viewBox="0 0 40 50">
           <use xlink:href="#bookmark"></use>
         </svg>
@@ -179,7 +179,7 @@
       
       
       
-      <a href="/tags/" aria-current="page">
+      <a href="/tags/" >
         <svg class="bookmark-icon" aria-hidden="true" focusable="false" viewBox="0 0 40 50">
           <use xlink:href="#bookmark"></use>
         </svg>
@@ -208,44 +208,361 @@
         <div>
           
   <main id="main">
-    <h1>Tags</h1>
-    <ul class="patterns-list">
+    <h1>
+      <svg class="bookmark-icon" aria-hidden="true" viewBox="0 0 40 50" focusable="false">
+        <use xlink:href="#bookmark"></use>
+      </svg>
+      用代码解释全连接网络
+    </h1>
+
+    <div class="date">
       
-        <li>
-          <h2>
-            <a href="/tags/algorithm/">
+      
+      <strong aria-hidden="true">Publish date: </strong>Nov 29, 2020
+      
+        
+      
+    </div>
+
+    
+      <div class="tags">
+        <strong aria-hidden="true">Tags: </strong>
+        <ul aria-label="tags">
+          
+            <li>
               <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
                 <use xlink:href="#tag"></use>
               </svg>
-              (2) algorithm
-            </a>
-          </h2>
-        </li>
-      
-        <li>
-          <h2>
-            <a href="/tags/command-tool/">
+              
+              <a href="https://zy6lc.github.io/tags/algorithm/">algorithm</a>
+            </li>
+          
+            <li>
               <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
                 <use xlink:href="#tag"></use>
               </svg>
-              (1) command tool
-            </a>
-          </h2>
+              
+              <a href="https://zy6lc.github.io/tags/deep-learning/">deep learning</a>
+            </li>
+          
+        </ul>
+      </div>
+    
+    
+    
+      
+
+  <nav class="toc" aria-labelledby="toc-heading">
+    <h2 id="toc-heading">Table of contents</h2>
+    <ol>
+      
+        <li>
+          
+          
+          
+          
+          <a href="#%e5%89%8d%e8%a8%80">
+            前言
+          </a>
         </li>
       
         <li>
-          <h2>
-            <a href="/tags/deep-learning/">
-              <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
-                <use xlink:href="#tag"></use>
-              </svg>
-              (1) deep learning
-            </a>
-          </h2>
+          
+          
+          
+          
+          <a href="#%e5%ae%9e%e7%8e%b0">
+            实现
+          </a>
         </li>
       
-    </ul>
+        <li>
+          
+          
+          
+          
+          <a href="#%e6%b5%8b%e8%af%95">
+            测试
+          </a>
+        </li>
+      
+        <li>
+          
+          
+          
+          
+          <a href="#%e6%80%bb%e7%bb%93">
+            总结
+          </a>
+        </li>
+      
+    </ol>
+  </nav>
+
+
+    
+
+    
+
+<h2 id="前言">前言</h2>
+
+<p>全连接网络是理解深度学习其他网络的敲门砖，相关概念可自行google。本文将用代码的方式来理解全连接网络。</p>
+
+<h2 id="实现">实现</h2>
+
+<p>以下是全连接网络的图形：</p>
+
+<p><img src="/images/fullConn.png" alt="" /></p>
+
+<p>神经网络的训练都分为3个步骤：</p>
+
+<ul>
+<li>正向预测</li>
+<li>反向传递损失</li>
+<li>梯度下降后更新权重和bias</li>
+</ul>
+
+<p>对象抽象：</p>
+
+<ul>
+<li>激活函数，包含前向激活计算以及反向求导计算</li>
+<li>输入(黄色)和输出(红色)矩阵对象，直接用numpy.array对象(以下公式中的变量，在无特殊说明下都表示numpy.array矩阵)</li>
+<li>链接层，如图蓝色框框，包含前向线性计算和激活过程</li>
+<li>全连接网络，包含属性对象一和对象二，以及整个全连接网络的构造、训练以及预测</li>
+</ul>
+
+<p>激活函数(sigmoid):</p>
+
+<p><em>公式1</em>.激活过程公式：</p>
+
+<p><img src="/images/sigmoid.gif" alt="" /></p>
+
+<p><em>公式2</em>.求导公式：</p>
+
+<p><img src="/images/y_i.gif" alt="" /></p>
+
+<pre><code class="language-python">import numpy as np
+
+
+class SigmoidActivator(object):
+    &quot;&quot;&quot;sigmoid激活函数&quot;&quot;&quot;
+    
+    @staticmethod
+    def forward(weighted_input):
+        &quot;&quot;&quot;正向激活计算&quot;&quot;&quot;
+        return 1.0 / (1.0 + np.exp(-weighted_input))
+
+    @staticmethod
+    def backward(output):
+        &quot;&quot;&quot;sigmoid求导&quot;&quot;&quot;
+        return output * (1 - output)
+
+</code></pre>
+
+<p>链接层:</p>
+
+<p><em>公式3</em>.前向线性计算：</p>
+
+<p><img src="/images/y.gif" alt="" /></p>
+
+<p>其中<em>w</em> 是权重矩阵，<em>x</em> 是输入矩阵，<em>b</em> 是<em>bias</em> ，接下来就是用<em>公式1</em> 激活函数计算。</p>
+
+<pre><code class="language-python">import numpy as np
+
+
+class Connection(object):
+    &quot;&quot;&quot;神经网络中的链接抽象，前向传播过程&quot;&quot;&quot;
+
+    def __init__(self, input_size, out_size, activator):
+        &quot;&quot;&quot;初始化
+        Args:
+            input_size: 链接层的输入
+            out_size: 链接层输出
+            activator: 激活函数
+        &quot;&quot;&quot;
+        self.input = None  # 链接层的输入，numpy.array矩阵对象
+        self.output = None  # 链接层的输出，numpy.array对象
+        self.delta = None  # 损失，也是一个矩阵
+        self.activator = activator  # 激活函数
+        self.out_size = out_size
+        self.input_size = input_size
+        self.bias = np.zeros((out_size, 1))  # 初始化bias矩阵
+        self.weight = np.random.uniform(-0.1, 0.1, (out_size, self.input_size))  # 初始化weight矩阵
+
+    def process(self, sample):
+        &quot;&quot;&quot;前向传播过程
+        Args:
+            sample: 输入的样本，一个矩阵
+        &quot;&quot;&quot;
+        self.input = sample
+        shape = sample.shape
+        if 3 == len(shape):
+            input_size = sample.shape[0]*sample.shape[1]*sample.shape[2]
+            self.input = sample.reshape((input_size, 1))
+        # 线性计算
+        y = np.dot(self.weight, self.input) + self.bias
+        self.output = self.activator.forward(y)  # 激活函数
+
+</code></pre>
+
+<p>全连接网络:</p>
+
+<p><em>公式4</em>.输出层损失计算：</p>
+
+<p><img src="/images/delta.gif" alt="" /></p>
+
+<p><em>公式5</em>.带入<em>公式2</em> ：</p>
+
+<p><img src="/images/delta2.gif" alt="" /></p>
+
+<p>其中<em>t</em> 是输出结果，<em>y</em> 是预测结果；</p>
+
+<p><em>公式6</em>.隐藏层损失计算：</p>
+
+<p><img src="/images/delta_i.gif" alt="" /></p>
+
+<p><em>公式7</em>.带入<em>公式2</em> ：</p>
+
+<p><img src="/images/delta_i2.gif" alt="" /></p>
+
+<p>其中<img src="/images/delta_i_1.fig" alt="" />是上一层的误差值，<img src="/images/w_t.gif" alt="" />是当前层权重的转置；</p>
+
+<p><em>公式8</em>.权重更新公式：</p>
+
+<p><img src="/images/w_update.gif" alt="" /></p>
+
+<p>其中<img src="/images/alpha.gif" alt="" />表示学习率，<img src="/images/x_t.gif" alt="" />表示某一层的输入的转置；</p>
+
+<p><em>公式9</em>.<em>bias</em> 更新公式：</p>
+
+<p><img src="/images/b_update.gif" alt="" /></p>
+
+<p>*预测过程*就是数据从输入全连接网络开始，经过所有隐藏层的线性计算和激活过程，最后输出结果。</p>
+
+<pre><code class="language-python">import numpy as np
+
+import Connection
+
+
+class FullConns(object):
+    &quot;&quot;&quot;全连接网络&quot;&quot;&quot;
+
+    def __init__(self, first_input_size, activator):
+        &quot;&quot;&quot;
+        全连接网络初始化
+        Args:
+            first_input_size: 全连接网络输入层矩阵的size；
+            activator: 激活函数，当添加隐藏层没有指定激活函数时，就用初始化的激活函数。
+        &quot;&quot;&quot;
+        self.input_size = first_input_size
+        self.activator = activator
+        self.conns = []  # 每个item都是一个Connection对象
+
+    def _calc_delta(self, label):
+        &quot;&quot;&quot;计算误差&quot;&quot;&quot;
+        out = self.conns[-1].output
+        delta = self.conns[-1].activator.backward(out)*(out-label)  # 输出层误差计算公式
+        for conn in self.conns[::-1]:
+            conn.delta = delta
+            delta = self.conns[-1].activator.backward(conn.input)*np.dot(conn.weight.T, delta)  # 其他层的误差计算公式
+
+    def _update(self, rate):
+        &quot;&quot;&quot;跟新权重矩阵和bias，梯度下降过程&quot;&quot;&quot;
+        for conn in self.conns:
+            conn.weight -= rate*np.dot(conn.delta, conn.input.T)
+            conn.bias += rate*conn.delta
+
+    def add_conn(self, size, activator=None):
+        &quot;&quot;&quot;增加隐藏层或者输出层
+        Args:
+            size: 隐藏层或者输出层的size;
+            activator: 当前层的激活函数，如果为None，则用初始化的激活函数
+        &quot;&quot;&quot;
+        input_size = self.input_size if not self.conns else self.conns[-1].out_size
+        self.conns.append(Connection(input_size, size, (activator or self.activator)))
+
+    def predict(self, x):
+        &quot;&quot;&quot;预测&quot;&quot;&quot;
+        out = x
+        for conn in self.conns:
+            conn.process(out)  # 正向计算
+            out = conn.output
+        return out
+
+    def train(self, inputs, labels, rate, epoch):
+        &quot;&quot;&quot;全连接网络训练: 1.预测；2.计算损失；3.更新权重。
+        Args:
+            inputs: 训练语料的输入;
+            labels: 训练语料输入对应的输出;
+            rate: 训练的rate;
+            epoch: 训练epoch。
+        &quot;&quot;&quot;
+        for i in range(epoch):
+            for sample, label in zip(inputs, labels):
+                self.predict(sample)
+                self._calc_delta(label)
+                self._update(rate)
+
+</code></pre>
+
+<h2 id="测试">测试</h2>
+
+<p>用mnist的前600个样本进行训练和测试，在epoch=50，rate=0.0085时，正确率为0.8517，训练代码如下：</p>
+
+<pre><code class="language-python">import mnist
+
+# 初始化一个全连接网络，28*28是mnist样本尺寸
+network = FullConns(28 * 28, SigmoidActivator())
+# 增加一个300个节点的隐藏层
+network.add_conn(300)
+# 增加一个10个节点的输出层
+network.add_conn(10)
+# 转换结果为一个矩阵
+train_labels = [mnist.translate_label(x) for x in train_labels]
+# 训练
+network.train(mnist.train_images[:600], mnist.train_labels[:600], 0.0085, 55)
+</code></pre>
+
+<h2 id="总结">总结</h2>
+
+<p>写了这些代码只是为了自己能够理解其中数据的变化过程，老是看那些理论性的解释，要么帖子写的稀里糊涂，要么时间久了记不住。希望本文对你有帮助，转载注明出处。</p>
+
   </main>
+  <div id="disqus-container">
+  
+    <button id="disqus-button" onclick="showComments()">Show comments</button>
+    <div id="disqus-comments">
+      
+      
+      
+        <div id="disqus_thread">
+        </div>
+        <script type="application/javascript">
+          function showComments() {
+            // Config
+var disqus_config = function () {
+};
+// Build and append comments 
+var d = document;
+var s = d.createElement('script');
+s.async = true;
+s.src = '//' + "zy6lc" + '.disqus.com/embed.js';
+s.setAttribute('data-timestamp', + new Date());
+(d.head || d.body).appendChild(s);
+            // Remove button
+var disqusButton = document.getElementById('disqus-button');
+disqusButton.parentNode.removeChild(disqusButton); 
+// Un-hide comments
+var disqusComments = document.getElementById('disqus-comments');
+disqusComments.style.display = 'block'; 
+          }
+        </script>
+      
+      <noscript>Enable JavaScript to view Disqus comments.</noscript>
+    </div>
+  
+</div>
+
 
           <footer role="contentinfo">
   <div>

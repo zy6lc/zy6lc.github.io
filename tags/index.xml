@@ -6,7 +6,7 @@
     <description>Recent content in Tags on zy6lc</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 05 May 2020 21:59:38 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 29 Nov 2020 17:17:59 +0800</lastBuildDate>
     
 	<atom:link href="https://zy6lc.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,9 +14,18 @@
     <item>
       <title>algorithm</title>
       <link>https://zy6lc.github.io/tags/algorithm/</link>
-      <pubDate>Tue, 05 May 2020 21:59:38 +0800</pubDate>
+      <pubDate>Sun, 29 Nov 2020 17:17:59 +0800</pubDate>
       
       <guid>https://zy6lc.github.io/tags/algorithm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>deep learning</title>
+      <link>https://zy6lc.github.io/tags/deep-learning/</link>
+      <pubDate>Sun, 29 Nov 2020 17:17:59 +0800</pubDate>
+      
+      <guid>https://zy6lc.github.io/tags/deep-learning/</guid>
       <description></description>
     </item>
     
