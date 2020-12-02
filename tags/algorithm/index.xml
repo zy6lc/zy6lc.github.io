@@ -6,11 +6,7 @@
     <description>Recent content in algorithm on zy6lc</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-<<<<<<< HEAD
     <lastBuildDate>Sun, 29 Nov 2020 17:17:59 +0800</lastBuildDate>
-=======
-    <lastBuildDate>Tue, 05 May 2020 21:59:38 +0800</lastBuildDate>
->>>>>>> 79f1e8c5abeda9c4f646a70b0c1277dbe398a820
     
 	<atom:link href="https://zy6lc.github.io/tags/algorithm/index.xml" rel="self" type="application/rss+xml" />
     
@@ -37,25 +33,18 @@ import numpy as np class Connection(object): &amp;quot;&amp;quot;&amp;quot;神�
     <item>
       <title>双数组trie树</title>
       <link>https://zy6lc.github.io/%E5%8F%8C%E6%95%B0%E7%BB%84trie%E6%A0%91/</link>
-      <pubDate>Tue, 05 May 2020 21:59:38 +0800</pubDate>
+      <pubDate>Tue, 05 May 2020 18:30:36 +0800</pubDate>
       
       <guid>https://zy6lc.github.io/%E5%8F%8C%E6%95%B0%E7%BB%84trie%E6%A0%91/</guid>
-      <description>keywords: trie树 双数组 双数组trie double array trie
-概念 百度百科
+      <description>概念 百度百科
 里面有一些语言的实现。
-双数组trie树 双数组trie树是trie的一种实现，用了两个数组存储整个trie树，好处是什么呢？通过双数组trie树的构造过程就可以知道。
-第一次构造 假设现在有一个词典，词典中只有一个词语：
+双数组trie树 双数组trie树是trie的一中实现，用了两个数组存储整个trie树，好处是什么呢？通过双数组trie树的构造过程就可以知道（构造方式有多种，但是核心思路是一样的）。
+第一次构造 假如现在我有一个词典，词典中只有一个词语：
 三天三夜  现在我要用双数组的方式构造trie树：
-<<<<<<< HEAD
 a.首先给这个词语的每个字符一个编码，然后初始化两个一定长度，并且元素全为0的数组A、B，再然后令B[0]=1，index=0，迭代index的公式为index=code+1，为了后续的匹配，令B[index]=child.index，A[index]=0说明位置空，A[index]=code+1说明位置被占用，并且可以通过code知道具体的字符：
    char 三 天 夜     CODE 0 1 2       INDEX 0 1 2 3 4 5     A 0 0 0 0 0 0   B 1 0 0 0 0 0    b.现在开始遍历词典，构造A、B数组：
 ​ 1.字符‘三’，code=0，index=code+1=1，因为A[index]=A[1]=0，该位置未占用，这个时候就可以令A[1]=value=code+1，则A[1]=1；
    INDEX 0 1 2 3 4 5     A 0 1 0 0 0 0   B 1 0 0 0 0 0    ​ 2.</description>
-=======
-a.首先给这个词语的每个字符一个编码：
-   CHAR 三 天 夜     CODE 0 1 2    b.初始化两个一定长度，并且元素全为0的数组A、B，再初始化B[0]=1，index=0，迭代index的公式为index=code+1；
-   INDEX 0 1 2 3 4 5     A 0 0 0 0 0 0   B 1 0 0 0 0 0    c.</description>
->>>>>>> 79f1e8c5abeda9c4f646a70b0c1277dbe398a820
     </item>
     
   </channel>

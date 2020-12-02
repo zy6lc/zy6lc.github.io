@@ -312,7 +312,7 @@
 
 <p>以下是全连接网络的图形：</p>
 
-<p><img src="/images/fullConn.png" alt="" /></p>
+<p><img src="/images/fullConn/fullConn.png" alt="" /></p>
 
 <p>神经网络的训练都分为3个步骤：</p>
 
@@ -335,11 +335,11 @@
 
 <p><em>公式1</em>.激活过程公式：</p>
 
-<p><img src="/images/sigmoid.gif" alt="" /></p>
+<p><img src="/images/fullConn/sigmoid.gif" alt="" /></p>
 
 <p><em>公式2</em>.求导公式：</p>
 
-<p><img src="/images/y_i.gif" alt="" /></p>
+<p><img src="/images/fullConn/y_i.gif" alt="" /></p>
 
 <pre><code class="language-python">import numpy as np
 
@@ -363,7 +363,7 @@ class SigmoidActivator(object):
 
 <p><em>公式3</em>.前向线性计算：</p>
 
-<p><img src="/images/y.gif" alt="" /></p>
+<p><img src="/images/fullConn/y.gif" alt="" /></p>
 
 <p>其中<em>w</em> 是权重矩阵，<em>x</em> 是输入矩阵，<em>b</em> 是<em>bias</em> ，接下来就是用<em>公式1</em> 激活函数计算。</p>
 
@@ -409,33 +409,33 @@ class Connection(object):
 
 <p><em>公式4</em>.输出层损失计算：</p>
 
-<p><img src="/images/delta.gif" alt="" /></p>
+<p><img src="/images/fullConn/delta.gif" alt="" /></p>
 
 <p><em>公式5</em>.带入<em>公式2</em> ：</p>
 
-<p><img src="/images/delta2.gif" alt="" /></p>
+<p><img src="/images/fullConn/delta2.gif" alt="" /></p>
 
 <p>其中<em>t</em> 是输出结果，<em>y</em> 是预测结果；</p>
 
 <p><em>公式6</em>.隐藏层损失计算：</p>
 
-<p><img src="/images/delta_i.gif" alt="" /></p>
+<p><img src="/images/fullConn/delta_i.gif" alt="" /></p>
 
 <p><em>公式7</em>.带入<em>公式2</em> ：</p>
 
-<p><img src="/images/delta_i2.gif" alt="" /></p>
+<p><img src="/images/fullConn/delta_i2.gif" alt="" /></p>
 
-<p>其中<img src="/images/delta_i_1.fig" alt="" />是上一层的误差值，<img src="/images/w_t.gif" alt="" />是当前层权重的转置；</p>
+<p>其中<img src="/images/fullConn/delta_i_1.fig" alt="" />是上一层的误差值，<img src="/images/fullConn/w_t.gif" alt="" />是当前层权重的转置；</p>
 
 <p><em>公式8</em>.权重更新公式：</p>
 
-<p><img src="/images/w_update.gif" alt="" /></p>
+<p><img src="/images/fullConn/w_update.gif" alt="" /></p>
 
-<p>其中<img src="/images/alpha.gif" alt="" />表示学习率，<img src="/images/x_t.gif" alt="" />表示某一层的输入的转置；</p>
+<p>其中<img src="/images/fullConn/alpha.gif" alt="" />表示学习率，<img src="/images/fullConn/x_t.gif" alt="" />表示某一层的输入的转置；</p>
 
 <p><em>公式9</em>.<em>bias</em> 更新公式：</p>
 
-<p><img src="/images/b_update.gif" alt="" /></p>
+<p><img src="/images/fullConn/b_update.gif" alt="" /></p>
 
 <p>*预测过程*就是数据从输入全连接网络开始，经过所有隐藏层的线性计算和激活过程，最后输出结果。</p>
 
