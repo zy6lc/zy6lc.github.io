@@ -260,9 +260,11 @@
 <p>感知机是机器学习中的一个概念，起因是模拟人脑结构，但是人脑结构解释起来也不简单，其实把感知机想成是一直毛毛虫，更容易理解。
 <img src="/images/perceptron/maomaochou.png" alt="" />
 此时感知机就是一只睡着的毛毛虫，现在用手去戳它，如果用的力气太小，毛毛虫还是会继续睡，如果力气大，毛毛丑就会醒来。这只手使用力气的大小就是输入，毛毛虫身体感受力气的过程是前向传递，毛毛虫的承受力就是激活函数；当观察到毛毛虫没有醒来时，我们使用更大的力气去戳它，这个观察的过程是反向传递；如此反复，到了下一次又遇见另一只毛毛虫，就知道该用多大的力气去戳醒它了；这就是感知的学习于应用的全过程了。
-假设现在有很多手同时去戳它：
-<img src="/images/perceptron/pct.png" alt="" />
-上面这个图就是感知机了。</p>
+假设现在有很多手同时去戳它：</p>
+
+<p><img src="/images/perceptron/pct.png" alt="" /></p>
+
+<p>上面这个图就是感知机了。</p>
 
 <h2 id="代码实现">代码实现</h2>
 
@@ -294,7 +296,7 @@ x_, y_ = mnist_0_1(x_, y_)
 <h3 id="激活函数">激活函数</h3>
 
 <p>激活函数采用step function，公式为:
-<img src="https://latex.codecogs.com/gif.latex?f(z)=left{begin{matrix}&amp;space;1&amp;space;&amp;&amp;space;z&gt;0\&amp;space;0&amp;space;&amp;&amp;space;otherwise&amp;space;end{matrix}right." alt="" /></p>
+<img src="/images/perceptron/stepFunc.svg" alt="" /></p>
 
 <pre><code class="language-python"># step funciton
 class StepActivator(object):
@@ -315,17 +317,17 @@ class StepActivator(object):
 <p>链接层指上图中输入与毛毛虫之间的连接线，可以理解为感知机的前向传播和反向传播都在这上面完成，所以可以把链接层抽象出来完成前向和反向的动作。
 前向传播公式：</p>
 
-<p><img src="https://latex.codecogs.com/gif.latex?y=f(wcdot&amp;space;x&amp;plus;b)" alt="" /></p>
+<p><img src="/images/perceptron/forword.svg" alt="" /></p>
 
 <p>其中<em>w</em> 代表权重，<em>x</em> 代表输入，<em>b</em> 代表偏置。</p>
 
 <p>反向传播（权重更新）公式：</p>
 
-<p><img src="https://latex.codecogs.com/gif.latex?Delta&amp;space;=y-t" alt="" /></p>
+<p><img src="/images/perceptron/delta.svg" alt="" /></p>
 
-<p><img src="https://latex.codecogs.com/gif.latex?wleftarrow&amp;space;w-alpha&amp;space;(Delta&amp;space;cdot&amp;space;x)" alt="" /></p>
+<p><img src="/images/perceptron/wUpdate.svg" alt="" /></p>
 
-<p><img src="https://latex.codecogs.com/gif.latex?bleftarrow&amp;space;b&amp;plus;Delta&amp;space;alpha" alt="" /></p>
+<p><img src="/images/perceptron/bUpdate.svg" alt="" /></p>
 
 <p>第一个公式中Δ表示损失，<em>y</em> 是前向传播的结果，<em>t</em> 是标记的正确值；</p>
 
@@ -419,10 +421,13 @@ print('准确率:', count/len(y_))
 
 </code></pre>
 
-<p>通过测试之后的效果(由于weight是随机初始化的，所以每次结果都会不一样，但是大体差不多)：
-测试总量: 2115
-正确个数: 2114
-准确率: 0.9995271867612293</p>
+<p>通过测试之后的效果(由于weight是随机初始化的，所以每次结果都会不一样，但是大体差不多)：</p>
+
+<p>测试总量: 2115</p>
+
+<p>正确个数: 2114</p>
+
+<p>准确率: 0.9995271867612293</p>
 
 <h3 id="总结">总结</h3>
 

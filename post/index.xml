@@ -16,7 +16,8 @@
       <pubDate>Sun, 13 Dec 2020 17:23:18 +0800</pubDate>
       
       <guid>https://zy6lc.github.io/perceptron/</guid>
-      <description>感知机是机器学习中的一个概念，起因是模拟人脑结构，但是人脑结构解释起来也不简单，其实把感知机想成是一直毛毛虫，更容易理解。 此时感知机就是一只睡着的毛毛虫，现在用手去戳它，如果用的力气太小，毛毛虫还是会继续睡，如果力气大，毛毛丑就会醒来。这只手使用力气的大小就是输入，毛毛虫身体感受力气的过程是前向传递，毛毛虫的承受力就是激活函数；当观察到毛毛虫没有醒来时，我们使用更大的力气去戳它，这个观察的过程是反向传递；如此反复，到了下一次又遇见另一只毛毛虫，就知道该用多大的力气去戳醒它了；这就是感知的学习于应用的全过程了。 假设现在有很多手同时去戳它： 上面这个图就是感知机了。
+      <description>感知机是机器学习中的一个概念，起因是模拟人脑结构，但是人脑结构解释起来也不简单，其实把感知机想成是一直毛毛虫，更容易理解。 此时感知机就是一只睡着的毛毛虫，现在用手去戳它，如果用的力气太小，毛毛虫还是会继续睡，如果力气大，毛毛丑就会醒来。这只手使用力气的大小就是输入，毛毛虫身体感受力气的过程是前向传递，毛毛虫的承受力就是激活函数；当观察到毛毛虫没有醒来时，我们使用更大的力气去戳它，这个观察的过程是反向传递；如此反复，到了下一次又遇见另一只毛毛虫，就知道该用多大的力气去戳醒它了；这就是感知的学习于应用的全过程了。 假设现在有很多手同时去戳它：
+上面这个图就是感知机了。
 代码实现 数据准备 用mnist数据中的0和1作为本次试验数据，把这些数据变成矩阵，假装模拟力气的大小。 首先需要去官网下载mnist数据。
 mnist_path = &#39;&#39; # mnist保存路径 x, y, x_, y_ = load(mnist_path) # 加载mnist数据 SAMPLE_SHAPE = 784 # 感知机网络的输入，相当于现在有784只手同时去戳毛毛虫  def mnist_0_1(x, y): # 挑选mnist中的1和0，并把数据shape改为(784, 1) X, Y = [], [] for i, j in zip(x, y): if j in [0, 1]: X.append(i.reshape(SAMPLE_SHAPE, 1)) Y.append(j) return X, Y x, y = mnist_0_1(x, y) x_, y_ = mnist_0_1(x_, y_)  激活函数 激活函数采用step function，公式为: # step funciton class StepActivator(object): &amp;quot;&amp;quot;&amp;quot;step activator&amp;quot;&amp;quot;&amp;quot; @staticmethod def forward(weighted_input): return 1 if weighted_input[0][0] &amp;gt; 0 else 0 @staticmethod def backward(output): return output  链接层 链接层指上图中输入与毛毛虫之间的连接线，可以理解为感知机的前向传播和反向传播都在这上面完成，所以可以把链接层抽象出来完成前向和反向的动作。 前向传播公式：</description>
     </item>
