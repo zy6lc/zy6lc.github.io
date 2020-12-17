@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
   <meta name="generator" content="Hugo 0.58.3" />
-  <link rel="canonical" href="https://zy6lc.github.io/post/">
+  <link rel="canonical" href="https://zy6lc.github.io/perceptron/">
 
   
 
@@ -32,7 +32,7 @@
 
   
   
-  <title>Blog | zy6lc</title>
+  <title>感知机 | zy6lc</title>
 </head>
 
   <body>
@@ -208,44 +208,262 @@
         <div>
           
   <main id="main">
-    <h1>Blog</h1>
-    <ul class="patterns-list">
+    <h1>
+      <svg class="bookmark-icon" aria-hidden="true" viewBox="0 0 40 50" focusable="false">
+        <use xlink:href="#bookmark"></use>
+      </svg>
+      感知机
+    </h1>
+
+    <div class="date">
+      
+      
+      <strong aria-hidden="true">Publish date: </strong>Dec 13, 2020
+      
+        
+      
+    </div>
+
     
-      <li>
-        <h2>
-          <a href="https://zy6lc.github.io/perceptron/">
-            <svg class="bookmark" aria-hidden="true" viewBox="0 0 40 50" focusable="false">
-              <use xlink:href="#bookmark"></use>
-            </svg>
-            感知机
-          </a>
-        </h2>
-      </li>        
+      <div class="tags">
+        <strong aria-hidden="true">Tags: </strong>
+        <ul aria-label="tags">
+          
+            <li>
+              <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
+                <use xlink:href="#tag"></use>
+              </svg>
+              
+              <a href="https://zy6lc.github.io/tags/algorithm/">algorithm</a>
+            </li>
+          
+            <li>
+              <svg class="tag-icon" aria-hidden="true" viewBox="0 0 177.16535 177.16535" focusable="false">
+                <use xlink:href="#tag"></use>
+              </svg>
+              
+              <a href="https://zy6lc.github.io/tags/deep-learning/">deep learning</a>
+            </li>
+          
+        </ul>
+      </div>
     
-      <li>
-        <h2>
-          <a href="https://zy6lc.github.io/%E5%8F%8C%E6%95%B0%E7%BB%84trie%E6%A0%91/">
-            <svg class="bookmark" aria-hidden="true" viewBox="0 0 40 50" focusable="false">
-              <use xlink:href="#bookmark"></use>
-            </svg>
-            双数组trie树
-          </a>
-        </h2>
-      </li>        
     
-      <li>
-        <h2>
-          <a href="https://zy6lc.github.io/unpack%E7%BB%88%E7%AB%AF%E4%B8%87%E8%83%BD%E8%A7%A3%E5%8E%8B%E5%B7%A5%E5%85%B7/">
-            <svg class="bookmark" aria-hidden="true" viewBox="0 0 40 50" focusable="false">
-              <use xlink:href="#bookmark"></use>
-            </svg>
-            unpack终端万能解压工具 mac/ubuntu 命令行 command line
-          </a>
-        </h2>
-      </li>        
     
-    </ul>
+      
+
+
+    
+
+    
+
+<p>感知机是机器学习中的一个概念，起因是模拟人脑结构，但是人脑结构解释起来也不简单，其实把感知机想成是一直毛毛虫，更容易理解。
+<img src="/images/perceptron/maomaochou.png" alt="" />
+此时感知机就是一只睡着的毛毛虫，现在用手去戳它，如果用的力气太小，毛毛虫还是会继续睡，如果力气大，毛毛丑就会醒来。这只手使用力气的大小就是输入，毛毛虫身体感受力气的过程是前向传递，毛毛虫的承受力就是激活函数；当观察到毛毛虫没有醒来时，我们使用更大的力气去戳它，这个观察的过程是反向传递；如此反复，到了下一次又遇见另一只毛毛虫，就知道该用多大的力气去戳醒它了；这就是感知的学习于应用的全过程了。
+假设现在有很多手同时去戳它：
+<img src="/images/perceptron/pct.png" alt="" />
+上面这个图就是感知机了。</p>
+
+<h2 id="代码实现">代码实现</h2>
+
+<h3 id="数据准备">数据准备</h3>
+
+<p>用mnist数据中的0和1作为本次试验数据，把这些数据变成矩阵，假装模拟力气的大小。
+首先需要去<a href="http://yann.lecun.com/exdb/mnist/">官网</a>下载mnist数据。</p>
+
+<pre><code class="language-python">mnist_path = ''  #  mnist保存路径
+x, y, x_, y_ = load(mnist_path)  # 加载mnist数据
+SAMPLE_SHAPE = 784  # 感知机网络的输入，相当于现在有784只手同时去戳毛毛虫
+</code></pre>
+
+<pre><code class="language-python">
+def mnist_0_1(x, y):
+#     挑选mnist中的1和0，并把数据shape改为(784, 1)
+    X, Y = [], []
+    for i, j in zip(x, y):
+        if j in [0, 1]:
+            X.append(i.reshape(SAMPLE_SHAPE, 1))
+            Y.append(j)
+    return X, Y
+        
+
+x, y = mnist_0_1(x, y)
+x_, y_ = mnist_0_1(x_, y_)
+</code></pre>
+
+<h3 id="激活函数">激活函数</h3>
+
+<p>激活函数采用step function，公式为:
+<img src="https://latex.codecogs.com/gif.latex?f(z)=left{begin{matrix}&amp;space;1&amp;space;&amp;&amp;space;z&gt;0\&amp;space;0&amp;space;&amp;&amp;space;otherwise&amp;space;end{matrix}right." alt="" /></p>
+
+<pre><code class="language-python"># step funciton
+class StepActivator(object):
+    &quot;&quot;&quot;step activator&quot;&quot;&quot;
+
+    @staticmethod
+    def forward(weighted_input):
+        return 1 if weighted_input[0][0] &gt; 0 else 0
+
+    @staticmethod
+    def backward(output):
+        return output
+
+</code></pre>
+
+<h3 id="链接层">链接层</h3>
+
+<p>链接层指上图中输入与毛毛虫之间的连接线，可以理解为感知机的前向传播和反向传播都在这上面完成，所以可以把链接层抽象出来完成前向和反向的动作。
+前向传播公式：</p>
+
+<p><img src="https://latex.codecogs.com/gif.latex?y=f(wcdot&amp;space;x&amp;plus;b)" alt="" /></p>
+
+<p>其中<em>w</em> 代表权重，<em>x</em> 代表输入，<em>b</em> 代表偏置。</p>
+
+<p>反向传播（权重更新）公式：</p>
+
+<p><img src="https://latex.codecogs.com/gif.latex?Delta&amp;space;=y-t" alt="" /></p>
+
+<p><img src="https://latex.codecogs.com/gif.latex?wleftarrow&amp;space;w-alpha&amp;space;(Delta&amp;space;cdot&amp;space;x)" alt="" /></p>
+
+<p><img src="https://latex.codecogs.com/gif.latex?bleftarrow&amp;space;b&amp;plus;Delta&amp;space;alpha" alt="" /></p>
+
+<p>第一个公式中Δ表示损失，<em>y</em> 是前向传播的结果，<em>t</em> 是标记的正确值；</p>
+
+<p>第二个公式中<em>w</em> 表示权重，α表示学效率，<em>x</em> 是输入值；</p>
+
+<p>第三个公式<em>b</em> 表示偏置。</p>
+
+<p>整个感知机学习过程就是要学习到权重<em>w</em> 和偏置<em>b</em> 。</p>
+
+<pre><code class="language-python"># 链接层
+class Connection(object):
+    &quot;&quot;&quot;神经网络中的链接抽象&quot;&quot;&quot;
+
+    def __init__(self, input_size, out_size, activator):
+        &quot;&quot;&quot;初始化
+        Args:
+            input_size: 链接层的输入size
+            out_size: 链接层输出size
+            activator: 激活函数size
+        &quot;&quot;&quot;
+        self.delta = None  # 损失，相当于通过观察之后知道这次力气是小了还是正好
+        self.activator = activator  # 激活函数，相当于毛毛虫的承受力
+        self.bias = np.zeros((out_size, 1))  # 初始化一个bias矩阵
+        self.weight = np.random.uniform(-1, 1, (out_size, input_size))  # 初始化一个weight矩阵
+
+    def forward(self, sample):
+        &quot;&quot;&quot;前向传播过程
+        Args:
+            sample: 输入的样本，一个矩阵
+        &quot;&quot;&quot;
+        y = np.dot(self.weight, sample) + self.bias  # 线性计算
+        return self.activator.forward(y)  # 激活函数
+
+    def backward(self, sample, delta, rate):
+        &quot;&quot;&quot;反向传播过程
+        Args:
+            sample: 和forward一样
+            delta: 损失值
+            rate: 梯度速率
+        &quot;&quot;&quot;
+        self.delta = delta
+        self.weight -= rate * np.dot(self.delta, sample.T)
+        self.bias += rate * self.delta
+
+</code></pre>
+
+<h3 id="感知机">感知机</h3>
+
+<pre><code class="language-python"># 感知机
+class Perceptron(Connection):
+
+    def __init__(self, input_size, out_size, activator):
+        Connection.__init__(self, input_size, out_size, activator)
+
+    def train(self, inputs, labels, rate, epoch):
+        &quot;&quot;&quot;感知机训练: 1.预测；2.计算损失；3.更新权重。
+        Args:
+            inputs: 训练语料的输入;
+            labels: 训练语料输入对应的输出;
+            rate: 训练的rate;
+            epoch: 训练epoch。
+        &quot;&quot;&quot;
+        for i in range(epoch):
+            for sample, label in zip(inputs, labels):
+                out = self.forward(sample)  # 预测
+                delta = out - label  # 损失
+                self.backward(sample, delta, rate)  # 更新权重
+
+</code></pre>
+
+<h3 id="测试">测试</h3>
+
+<pre><code class="language-python"># mnist感知机初始化
+perceptron = Perceptron(SAMPLE_SHAPE, 1, StepActivator())
+</code></pre>
+
+<pre><code class="language-python"># 训练，由于训练语料已经足够大了，所以只训练一个epoch就够了
+perceptron.train(x, y, 0.05, 1)
+</code></pre>
+
+<pre><code class="language-python"># 测试
+count = 0
+for i, j in zip(x_, y_):
+    jj = perceptron.forward(i)
+    if int(jj) == int(j):
+        count += 1
+
+print('测试总量:', len(y_))
+print('正确个数:', count)
+print('准确率:', count/len(y_))
+
+</code></pre>
+
+<p>通过测试之后的效果(由于weight是随机初始化的，所以每次结果都会不一样，但是大体差不多)：
+测试总量: 2115
+正确个数: 2114
+准确率: 0.9995271867612293</p>
+
+<h3 id="总结">总结</h3>
+
+<p>其实只要随便去搜一下感知的概念，对照这代码看一看公式，再自己手写(那怕是抄)一遍，就可以明白这只小🐛了，这样就不会看了忘，忘了又看。</p>
+
   </main>
+  <div id="disqus-container">
+  
+    <button id="disqus-button" onclick="showComments()">Show comments</button>
+    <div id="disqus-comments">
+      
+      
+      
+        <div id="disqus_thread">
+        </div>
+        <script type="application/javascript">
+          function showComments() {
+            // Config
+var disqus_config = function () {
+};
+// Build and append comments 
+var d = document;
+var s = d.createElement('script');
+s.async = true;
+s.src = '//' + "zy6lc" + '.disqus.com/embed.js';
+s.setAttribute('data-timestamp', + new Date());
+(d.head || d.body).appendChild(s);
+            // Remove button
+var disqusButton = document.getElementById('disqus-button');
+disqusButton.parentNode.removeChild(disqusButton); 
+// Un-hide comments
+var disqusComments = document.getElementById('disqus-comments');
+disqusComments.style.display = 'block'; 
+          }
+        </script>
+      
+      <noscript>Enable JavaScript to view Disqus comments.</noscript>
+    </div>
+  
+</div>
+
 
           <footer role="contentinfo">
   <div>

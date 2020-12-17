@@ -12,22 +12,14 @@
     
     
     <item>
-      <title>用代码解释全连接网络</title>
-      <link>https://zy6lc.github.io/fullconns/</link>
-      <pubDate>Sun, 29 Nov 2020 17:17:59 +0800</pubDate>
+      <title>感知机</title>
+      <link>https://zy6lc.github.io/perceptron/</link>
+      <pubDate>Sun, 13 Dec 2020 17:23:18 +0800</pubDate>
       
-      <guid>https://zy6lc.github.io/fullconns/</guid>
-      <description>前言 全连接网络是理解深度学习其他网络的敲门砖，相关概念可自行google。本文将用代码的方式来理解全连接网络。
-实现 以下是全连接网络的图形：
-神经网络的训练都分为3个步骤：
- 正向预测 反向传递损失 梯度下降后更新权重和bias  对象抽象：
- 激活函数，包含前向激活计算以及反向求导计算 输入(黄色)和输出(红色)矩阵对象，直接用numpy.array对象(以下公式中的变量，在无特殊说明下都表示numpy.array矩阵) 链接层，如图蓝色框框，包含前向线性计算和激活过程 全连接网络，包含属性对象一和对象二，以及整个全连接网络的构造、训练以及预测  激活函数(sigmoid):
-公式1.激活过程公式：
-公式2.求导公式：
-import numpy as np class SigmoidActivator(object): &amp;quot;&amp;quot;&amp;quot;sigmoid激活函数&amp;quot;&amp;quot;&amp;quot; @staticmethod def forward(weighted_input): &amp;quot;&amp;quot;&amp;quot;正向激活计算&amp;quot;&amp;quot;&amp;quot; return 1.0 / (1.0 + np.exp(-weighted_input)) @staticmethod def backward(output): &amp;quot;&amp;quot;&amp;quot;sigmoid求导&amp;quot;&amp;quot;&amp;quot; return output * (1 - output)  链接层:
-公式3.前向线性计算：
-其中w 是权重矩阵，x 是输入矩阵，b 是bias ，接下来就是用公式1 激活函数计算。
-import numpy as np class Connection(object): &amp;quot;&amp;quot;&amp;quot;神经网络中的链接抽象，前向传播过程&amp;quot;&amp;quot;&amp;quot; def __init__(self, input_size, out_size, activator): &amp;quot;&amp;quot;&amp;quot;初始化 Args: input_size: 链接层的输入 out_size: 链接层输出 activator: 激活函数 &amp;quot;&amp;quot;&amp;quot; self.</description>
+      <guid>https://zy6lc.github.io/perceptron/</guid>
+      <description>感知机是机器学习中的一个概念，起因是模拟人脑结构，但是人脑结构解释起来也不简单，其实把感知机想成是一直毛毛虫，更容易理解。 此时感知机就是一只睡着的毛毛虫，现在用手去戳它，如果用的力气太小，毛毛虫还是会继续睡，如果力气大，毛毛丑就会醒来。这只手使用力气的大小就是输入，毛毛虫身体感受力气的过程是前向传递，毛毛虫的承受力就是激活函数；当观察到毛毛虫没有醒来时，我们使用更大的力气去戳它，这个观察的过程是反向传递；如此反复，到了下一次又遇见另一只毛毛虫，就知道该用多大的力气去戳醒它了；这就是感知的学习于应用的全过程了。 假设现在有很多手同时去戳它： 上面这个图就是感知机了。
+代码实现 数据准备 用mnist数据中的0和1作为本次试验数据，把这些数据变成矩阵，假装模拟力气的大小。 首先需要去官网下载mnist数据。
+mnist_path = &#39;&#39; # mnist保存路径 x, y, x_, y_ = load(mnist_path) # 加载mnist数据 SAMPLE_SHAPE = 784 # 感知机网络的输入，相当于现在有784只手同时去戳毛毛虫  def mnist_0_1(x, y): # 挑选mnist中的1和0，并把数据shape改为(784, 1) X, Y = [], [] for i, j in zip(x, y): if j in [0, 1]: X.append(i.reshape(SAMPLE_SHAPE, 1)) Y.append(j) return X, Y x, y = mnist_0_1(x, y) x_, y_ = mnist_0_1(x_, y_)  激活函数 激活函数采用step function，公式为: # step funciton class StepActivator(object): &amp;quot;&amp;quot;&amp;quot;step activator&amp;quot;&amp;quot;&amp;quot; @staticmethod def forward(weighted_input): return 1 if weighted_input[0][0] &amp;gt; 0 else 0 @staticmethod def backward(output): return output  链接层 链接层指上图中输入与毛毛虫之间的连接线，可以理解为感知机的前向传播和反向传播都在这上面完成，所以可以把链接层抽象出来完成前向和反向的动作。 前向传播公式：</description>
     </item>
     
     <item>
