@@ -24,6 +24,25 @@ mnist_path = &#39;&#39; # mnist保存路径 x, y, x_, y_ = load(mnist_path) # �
     </item>
     
     <item>
+      <title>用代码解释全连接网络</title>
+      <link>https://zy6lc.github.io/fullconns/</link>
+      <pubDate>Sun, 29 Nov 2020 17:17:59 +0800</pubDate>
+      
+      <guid>https://zy6lc.github.io/fullconns/</guid>
+      <description>前言 全连接网络是理解深度学习其他网络的敲门砖，相关概念可自行google。本文将用代码的方式来理解全连接网络。
+实现 以下是全连接网络的图形：
+神经网络的训练都分为3个步骤：
+ 正向预测 反向传递损失 梯度下降后更新权重和bias  对象抽象：
+ 激活函数，包含前向激活计算以及反向求导计算 输入(黄色)和输出(红色)矩阵对象，直接用numpy.array对象(以下公式中的变量，在无特殊说明下都表示numpy.array矩阵) 链接层，如图蓝色框框，包含前向线性计算和激活过程 全连接网络，包含属性对象一和对象二，以及整个全连接网络的构造、训练以及预测  激活函数(sigmoid):
+公式1.激活过程公式：
+公式2.求导公式：
+import numpy as np class SigmoidActivator(object): &amp;quot;&amp;quot;&amp;quot;sigmoid激活函数&amp;quot;&amp;quot;&amp;quot; @staticmethod def forward(weighted_input): &amp;quot;&amp;quot;&amp;quot;正向激活计算&amp;quot;&amp;quot;&amp;quot; return 1.0 / (1.0 + np.exp(-weighted_input)) @staticmethod def backward(output): &amp;quot;&amp;quot;&amp;quot;sigmoid求导&amp;quot;&amp;quot;&amp;quot; return output * (1 - output)  链接层:
+公式3.前向线性计算：
+其中w 是权重矩阵，x 是输入矩阵，b 是bias ，接下来就是用公式1 激活函数计算。
+import numpy as np class Connection(object): &amp;quot;&amp;quot;&amp;quot;神经网络中的链接抽象，前向传播过程&amp;quot;&amp;quot;&amp;quot; def __init__(self, input_size, out_size, activator): &amp;quot;&amp;quot;&amp;quot;初始化 Args: input_size: 链接层的输入 out_size: 链接层输出 activator: 激活函数 &amp;quot;&amp;quot;&amp;quot; self.</description>
+    </item>
+    
+    <item>
       <title>双数组trie树</title>
       <link>https://zy6lc.github.io/%E5%8F%8C%E6%95%B0%E7%BB%84trie%E6%A0%91/</link>
       <pubDate>Tue, 05 May 2020 18:30:36 +0800</pubDate>
